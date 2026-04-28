@@ -92,9 +92,7 @@ export default role => {
         case 'partner': {
             return (
                 <PageWrapper
-                    loading={
-                        eventLoading || registrationLoading || alertsLoading
-                    }
+                    loading={eventLoading || registrationLoading}
                     wrapContent={false}
                 >
                     <PartnerDashboard
@@ -110,9 +108,7 @@ export default role => {
         case 'organizer': {
             return (
                 <PageWrapper
-                    loading={
-                        eventLoading || registrationLoading || alertsLoading
-                    }
+                    loading={eventLoading || registrationLoading}
                     wrapContent={false}
                 >
                     <OrganizerDashboard />
@@ -122,9 +118,7 @@ export default role => {
         case 'participant': {
             return (
                 <PageWrapper
-                    loading={
-                        eventLoading || registrationLoading || alertsLoading
-                    }
+                    loading={eventLoading || registrationLoading}
                     wrapContent={false}
                 >
                     <ParticipantDashboard
