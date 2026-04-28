@@ -215,6 +215,7 @@ export default $config({
         REACT_APP_CLOUDINARY_CLOUD_NAME: secrets.cloudinaryCloudName.value,
         REACT_APP_ID_TOKEN_NAMESPACE: secrets.idTokenNamespace.value,
         REACT_APP_BASE_URL: $interpolate`${backend.url}`,
+        REACT_APP_WEB_SOCKET_URL: $interpolate`${backend.url}`.apply(url => url.replace(/^https?:\/\//, 'wss://').replace(/\/+$/, '') + '/graphql'),
         REACT_APP_FRONTEND_URL: frontendUrl,
       },
     });
