@@ -7,9 +7,6 @@ import { useTranslation } from 'react-i18next'
 
 export default () => {
     const { i18n } = useTranslation()
-    console.log('LanguageMenu')
-    console.log(i18n)
-    console.log(i18n.language)
     const handleChange = event => {
         i18n.changeLanguage(event.target.value)
     }
