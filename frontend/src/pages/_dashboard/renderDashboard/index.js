@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 
 import { useRouteMatch } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
@@ -11,10 +11,6 @@ import OrganizerDashboard from './organiser'
 import * as DashboardSelectors from 'redux/dashboard/selectors'
 import * as DashboardActions from 'redux/dashboard/actions'
 import * as UserSelectors from 'redux/user/selectors'
-
-import { useLazyQuery, useSubscription } from '@apollo/client'
-import { ALERTS_QUERY } from 'graphql/queries/alert'
-import { NEW_ALERTS_SUBSCRIPTION } from 'graphql/subscriptions/alert'
 
 export default role => {
     const match = useRouteMatch()
@@ -29,12 +25,6 @@ export default role => {
     const userAccessRight = useSelector(UserSelectors.userAccessRight)
     const { slug } = match.params
 
-    const [alerts, setAlerts] = useState([])
-    const [alertCount, setAlertCount] = useState(0)
-    const { data: newAlert } = useSubscription(NEW_ALERTS_SUBSCRIPTION, {
-        variables: { slug },
-    })
-
     /** Update when slug changes */
     useEffect(() => {
         dispatch(DashboardActions.updateEvent(slug))
@@ -43,49 +33,13 @@ export default role => {
         dispatch(DashboardActions.updateProjects(slug))
     }, [slug])
 
-    // Must use lazy query because event is fetched asynchnronously
-    const [getAlerts, { loading: alertsLoading, data: alertsData }] =
-        useLazyQuery(ALERTS_QUERY)
-
     useEffect(() => {
         if (event) {
-            getAlerts({ variables: { eventId: event._id } })
             dispatch(
                 DashboardActions.updateRecruitersForEvent(event.recruiters),
             )
         }
-    }, [event, getAlerts])
-
-    // Set alerts when data is fetched or recieved through websocket
-    useEffect(() => {
-        if (alertsData) {
-            setAlerts(old => {
-                const newArray = [...old, ...alertsData.alerts]
-                newArray.sort(
-                    (a, b) => +new Date(a.sentAt) - +new Date(b.sentAt),
-                )
-                return old.length === 0 ? newArray : old
-            })
-        }
-        if (newAlert) {
-            if (
-                'Notification' in window &&
-                Notification.permission === 'granted'
-            ) {
-                new Notification('Announcement', {
-                    body: newAlert.newAlert.content,
-                })
-            }
-            setAlertCount(alertCount + 1)
-            setAlerts(old => {
-                const newArray = [...old, newAlert.newAlert]
-                newArray.sort(
-                    (a, b) => +new Date(a.sentAt) - +new Date(b.sentAt),
-                )
-                return newArray
-            })
-        }
-    }, [alertsData, setAlerts, newAlert, setAlertCount])
+    }, [event])
 
     //TODO: reconstruct to contain partner, organizer & participnat pages
     switch (userAccessRight) {
@@ -97,8 +51,8 @@ export default role => {
                 >
                     <PartnerDashboard
                         event={event}
-                        originalAlertCount={alertCount}
-                        originalAlerts={alerts}
+                        originalAlertCount={0}
+                        originalAlerts={[]}
                         shownPages={shownPages}
                         lockedPages={lockedPages}
                     />
@@ -123,8 +77,8 @@ export default role => {
                 >
                     <ParticipantDashboard
                         event={event}
-                        originalAlertCount={alertCount}
-                        originalAlerts={alerts}
+                        originalAlertCount={0}
+                        originalAlerts={[]}
                         shownPages={shownPages}
                         lockedPages={lockedPages}
                     />
