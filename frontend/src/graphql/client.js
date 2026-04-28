@@ -28,24 +28,28 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 })
 
 export default idToken => {
-    const wsLink = new GraphQLWsLink(
-        createClient({
-            url: config.WEB_SOCKET_URL,//TODO: is this causing renew loop problem?
-            connectionParams: { authToken: idToken },
-        }),
-    )
+    let terminalLink = httpLink
 
-    const splitLink = split(
-        ({ query }) => {
-            const definition = getMainDefinition(query)
-            return (
-                definition.kind === 'OperationDefinition' &&
-                definition.operation === 'subscription'
-            )
-        },
-        wsLink,
-        httpLink,
-    )
+    if (config.WEB_SOCKET_URL) {
+        const wsLink = new GraphQLWsLink(
+            createClient({
+                url: config.WEB_SOCKET_URL,
+                connectionParams: { authToken: idToken },
+            }),
+        )
+
+        terminalLink = split(
+            ({ query }) => {
+                const definition = getMainDefinition(query)
+                return (
+                    definition.kind === 'OperationDefinition' &&
+                    definition.operation === 'subscription'
+                )
+            },
+            wsLink,
+            httpLink,
+        )
+    }
 
     const authLink = setContext((_, { headers }) => {
         return {
@@ -62,7 +66,7 @@ export default idToken => {
         links.push(errorLink)
     }
     links.push(authLink)
-    links.push(splitLink)
+    links.push(terminalLink)
 
     return new ApolloClient({
         link: ApolloLink.from(links),
