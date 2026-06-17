@@ -11,8 +11,8 @@ const CloudinaryImageSchema = require('./CloudinaryImage')
 const ChallengeSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: true,
-        length: 200,
+
+        maxlength: 200,
     },
     partner: {
         type: String,
@@ -53,17 +53,17 @@ const ChallengeSchema = new mongoose.Schema({
             {
                 criteria: {
                     type: String,
-                    required: true,
+            
                 },
                 label: {
                     type: String,
-                    required: true,
+            
                 },
             },
         ],
         default: [],
     },
-})
+}, { _id: false })
 
 const ChallengeType = new GraphQLObjectType({
     name: 'Challenge',

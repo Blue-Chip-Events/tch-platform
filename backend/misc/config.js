@@ -25,7 +25,7 @@ const settings = {
     },
     CALENDAR_URL: {
         required: false,
-        value: process.env.CALENDAR_URL || 'https://hackjunction.com/calendar',
+        value: process.env.CALENDAR_URL || 'https://thatcryptohackathon.com/calendar',
     },
     CLOUDINARY_API_KEY: {
         required: true,
@@ -75,7 +75,7 @@ const settings = {
     },
     PLATFORM_OWNER_NAME: {
         required: true,
-        value: process.env.PLATFORM_OWNER_NAME || 'Junction',
+        value: process.env.PLATFORM_OWNER_NAME || 'That Crypto Hackathon',
     },
     PORT: {
         required: true,
@@ -87,11 +87,11 @@ const settings = {
     },
     SENDGRID_FROM_EMAIL: {
         required: true,
-        value: process.env.SENDGRID_FROM_EMAIL || 'noreply@hackjunction.com',
+        value: process.env.SENDGRID_FROM_EMAIL || 'noreply@thatcryptohackathon.com',
     },
     SENDGRID_FROM_NAME: {
         required: true,
-        value: process.env.SENDGRID_FROM_NAME || 'Junction',
+        value: process.env.SENDGRID_FROM_NAME || 'That Crypto Hackathon',
     },
     SENDGRID_GENERIC_TEMPLATE: {
         required: true,

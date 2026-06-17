@@ -10,13 +10,13 @@ const {
 const mongooseSchema = new mongoose.Schema({
     recruiterId: {
         type: String,
-        required: true,
+
     },
     organization: {
         type: String,
         default: '',
     },
-})
+}, { _id: false })
 
 const EventRecruitersType = new GraphQLObjectType({
     name: 'EventRecruiters',

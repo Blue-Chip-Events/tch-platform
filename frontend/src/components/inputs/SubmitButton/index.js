@@ -14,7 +14,9 @@ import config from 'constants/config'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
-        background: 'rgba(255,255,255,1)',
+        background: 'rgba(255,255,255,0.05)',
+        border: '1px solid rgba(255,255,255,0.1)',
+        borderRadius: '4px',
         padding: theme.spacing(2),
         marginBottom: '2px',
         width: '100%',
@@ -38,7 +40,6 @@ const SubmitButton = ({ hasErrors, loading, onSubmit, event }) => {
     const [confirmed3, setConfirmed3] = useState(false)
     const { t } = useTranslation()
     const confirmed = confirmed1 && confirmed2 && confirmed3
-    console.log('event is ', event)
     return (
         <Box display="flex" flexDirection="column" alignItems="center">
             <Box className={classes.wrapper}>

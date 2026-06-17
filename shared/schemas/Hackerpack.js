@@ -10,7 +10,7 @@ const CloudinaryImageSchema = require('./CloudinaryImage')
 const HackerpackSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: true,
+
     },
     partner: {
         type: String,
@@ -25,7 +25,7 @@ const HackerpackSchema = new mongoose.Schema({
     link: {
         type: String,
     },
-})
+}, { _id: false })
 
 const HackerpackType = new GraphQLObjectType({
     name: 'Hackerpack',

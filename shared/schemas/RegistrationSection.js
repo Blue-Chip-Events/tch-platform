@@ -12,16 +12,16 @@ const RegistrationQuestionSchema = require('./RegistrationQuestion')
 const RegistrationSectionSchema = new mongoose.Schema({
     label: {
         type: String,
-        required: true,
+
     },
     name: {
         type: String,
-        required: true,
+
     },
     description: String,
     conditional: String,
     questions: [RegistrationQuestionSchema.mongoose],
-})
+}, { _id: false })
 
 const RegistrationSectionType = new GraphQLObjectType({
     name: 'RegistrationSection',

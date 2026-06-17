@@ -10,33 +10,27 @@ const Countries = require('../constants/countries')
 const mongooseSchema = new mongoose.Schema({
     country: {
         type: String,
-        required: true,
         validate: {
-            validator(v) {
-                return Countries.asArrayOfName.indexOf(v) !== -1
-            },
+            validator: v => Countries.asArrayOfName.indexOf(v) !== -1,
             message: props => `${props.value} is not a valid country`,
         },
     },
     addressLine: {
         type: String,
-        required: true,
     },
     addressLine2: {
         type: String,
     },
     city: {
         type: String,
-        required: true,
     },
     postalCode: {
         type: String,
-        required: true,
     },
     venueName: {
         type: String,
     },
-})
+}, { _id: false })
 
 const graphqlInput = new GraphQLInputObjectType({
     name: 'AddressInput',

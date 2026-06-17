@@ -5,11 +5,9 @@ const Countries = require('../constants/countries')
 const mongooseSchema = new mongoose.Schema({
     countryCode: {
         type: String,
-        required: true,
+
         validate: {
-            validator(v) {
-                return Countries.asArrayOfPhoneCodes.indexOf(v) !== -1
-            },
+            validator: v => Countries.asArrayOfPhoneCodes.indexOf(v) !== -1,
             message: props => `${props.value} is not a valid phone code`,
         },
     },
@@ -18,7 +16,7 @@ const mongooseSchema = new mongoose.Schema({
         type: String,
     },
     number: String,
-})
+}, { _id: false })
 
 const graphqlSchema = new GraphQLObjectType({
     name: 'PhoneNumber',

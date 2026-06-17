@@ -21,8 +21,9 @@ i18n
     // for all options read: https://www.i18next.com/overview/configuration-options
     .init({
         fallbackLng: 'en',
-        debug: true,
-        saveMissing: true, // send not translated keys to endpoint
+        supportedLngs: ['en', 'zh'],
+        load: 'languageOnly',
+        debug: false,
         keySeparator: false, // we do not use keys in form messages.welcome
         interpolation: {
             escapeValue: false, // not needed for react as it escapes by default

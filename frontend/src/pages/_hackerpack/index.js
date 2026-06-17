@@ -24,8 +24,8 @@ const useStyles = makeStyles(theme => ({
         alignItems: 'center',
         justifyContent: 'center',
         padding: theme.spacing(3),
-        background: 'black',
-        color: 'white',
+        background: '#001d24',
+        color: '#ffffff',
     },
 }))
 
@@ -56,17 +56,17 @@ export default () => {
                 <title>{config.PLATFORM_OWNER_NAME}</title>
                 <meta
                     name="keywords"
-                    content="Hackathon, hackathon platform, Junction, hackerpack, hackjunction"
+                    content="Hackathon, hackathon platform, crypto, web3, hackerpack"
                 />
-                <meta name="title" content="Junction App || Hackerpack" />
+                <meta name="title" content="That Crypto Hackathon || Hackerpack" />
                 <meta
                     property="og:title"
-                    content="Junction App || Hackerpack"
+                    content="That Crypto Hackathon || Hackerpack"
                 />
 
                 <meta
                     name="twitter:title"
-                    content="Junction App || Hackerpack"
+                    content="That Crypto Hackathon || Hackerpack"
                 />
                 <meta
                     name="description"
@@ -113,7 +113,7 @@ export default () => {
                 <Box p={2}>
                     <Typography color="textSecondary" variant="subtitle1">
                         Anything you would like to see here in the future?
-                        Contact us at partnerships@hackjunction.com with your
+                        Contact us at jani@bluechipevents.fi with your
                         suggestion.
                     </Typography>
                 </Box>

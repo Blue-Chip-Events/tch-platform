@@ -9,13 +9,13 @@ const {
 const CloudinaryImageSchema = new mongoose.Schema({
     url: {
         type: String,
-        required: true,
+
     },
     publicId: {
         type: String,
-        required: true,
+
     },
-})
+}, { _id: false })
 const CloudinaryImageType = new GraphQLObjectType({
     name: 'CloudinaryImage',
     fields: {

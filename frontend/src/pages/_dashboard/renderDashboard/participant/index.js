@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 
 import { useRouteMatch, useLocation } from 'react-router'
 
@@ -35,7 +35,7 @@ import sideChallengesPage from './side-challenges'
 
 import { useTranslation } from 'react-i18next'
 
-import Badge from '@material-ui/core/Badge'
+// import Badge from '@material-ui/core/Badge'
 import {
     CheckBox,
     EmojiEventsRounded,
@@ -47,7 +47,7 @@ import {
 
 import { Chat } from 'components/messaging/chat'
 import { Grid, Paper } from '@material-ui/core'
-import DefaultImage from 'assets/images/dashboardDefault.jpg'
+import DefaultImage from 'assets/images/tch-logo-animated.gif'
 
 const useStyles = makeStyles(theme => ({
     sidebarTop: {
@@ -75,15 +75,7 @@ export default ({
     const { t } = useTranslation()
     const match = useRouteMatch()
     const location = useLocation()
-    const [alertCount, setAlertCount] = useState(originalAlertCount)
-    const [alerts, setAlerts] = useState(originalAlerts)
-
     let isNotMainEvent = event?.slug !== 'junction-2024'
-
-    useEffect(() => {
-        setAlerts(originalAlerts)
-        setAlertCount(originalAlertCount)
-    }, [originalAlerts, originalAlertCount])
 
     return (
         <SidebarLayout
@@ -107,15 +99,9 @@ export default ({
                     key: 'dashboard',
                     path: '',
                     exact: true,
-                    icon: (
-                        <Badge badgeContent={alertCount} color="primary">
-                            <DashboardIcon />
-                        </Badge>
-                    ),
+                    icon: <DashboardIcon />,
                     label: t('Dashboard_'),
-                    component: () => {
-                        return DefaultPage({ alerts })
-                    },
+                    component: DefaultPage,
                 },
                 {
                     key: 'finals',

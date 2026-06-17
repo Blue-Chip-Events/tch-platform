@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useRouteMatch } from 'react-router'
 import { Route, Switch, Redirect } from 'react-router-dom'
 import SlugPage from './renderDashboard'
@@ -29,67 +29,53 @@ export default () => {
 
     //SET EVENTS TO DISPLAY
     const [organizerEvents, loading] = useMyEvents()
-    const [activeEvents, loadingActive] = useActiveEvents({}) //active events, from these we select where to rediret, or default
+    const [activeEvents, loadingActive] = useActiveEvents({})
     const [pastEvents, loadingPast] = usePastEvents({ limit: 3 })
 
     //FIND ROLES AVAILABLE FOR USER
+    const idTokenData = useSelector(AuthSelectors.idTokenData)
+    const recruiterEvents = useSelector(UserSelectors.userProfileRecruiterEvents)
+
     const isPartner =
-        useSelector(AuthSelectors.idTokenData)?.roles?.includes('Recruiter') &&
-        !useSelector(AuthSelectors.idTokenData)?.roles?.includes(
-            'SuperAdmin',
-        ) &&
-        useSelector(UserSelectors.userProfileRecruiterEvents)
-            ?.map(e => e.eventId)
-            .includes(event?._id)
+        idTokenData?.roles?.includes('Recruiter') &&
+        !idTokenData?.roles?.includes('SuperAdmin') &&
+        recruiterEvents?.map(e => e.eventId).includes(event?._id)
 
     const isOrganizer =
-        useSelector(AuthSelectors.idTokenData)?.roles?.some(r =>
+        idTokenData?.roles?.some(r =>
             ['Organiser', 'AssistantOrganiser', 'SuperAdmin'].includes(r),
         ) && organizerEvents?.map(e => e._id).includes(event?._id)
 
-    // Set up browser notifications
     useEffect(() => {
-        if ('Notification' in window && Notification.permission !== 'granted') {
-            Notification.requestPermission()
-        }
-    }, [])
-
-    useEffect(() => {
-        //does not take multiple roles into a count
         if (isPartner) {
             dispatch(UserActions.setAccessRight('partner'))
         } else if (isOrganizer) {
             dispatch(UserActions.setAccessRight('organizer'))
         }
-    }, [])
+    }, [isPartner, isOrganizer])
 
+    // Dispatch events data to Redux only once when loading completes
+    const dispatchedRef = useRef(false)
     useEffect(() => {
-        if (!loading) {
-            dispatch(UserActions.organizerEvents(organizerEvents))
+        if (!loading && !loadingActive && !loadingPast && !dispatchedRef.current) {
+            dispatchedRef.current = true
+            if (organizerEvents) dispatch(UserActions.organizerEvents(organizerEvents))
+            if (activeEvents) dispatch(DashboardActions.activeEvents(activeEvents))
+            if (pastEvents) dispatch(DashboardActions.pastEvents(pastEvents))
         }
-        if (!loadingActive) {
-            dispatch(DashboardActions.activeEvents(activeEvents))
-        }
-        if (!loadingPast) {
-            dispatch(DashboardActions.pastEvents(pastEvents))
-        }
-    }, [organizerEvents, activeEvents, pastEvents])
+    }, [loading, loadingActive, loadingPast])
 
     //redirect to right event page, default, or out
     return (
         <Switch>
             <Route
                 exact={false}
-                path={
-                    `${match.path}/event/:slug` /*TODO: pass correct event and role and create default case*/
-                }
+                path={`${match.path}/event/:slug`}
                 component={SlugPage}
             />
             <Route
                 exact={false}
-                path={
-                    `${match.path}/default` /*TODO: pass correct event and role and create default case*/
-                }
+                path={`${match.path}/default`}
                 component={DefaultPage}
             />
             {/* For all other routes, redirect outta here */}

@@ -317,7 +317,7 @@ const EventSchema = new mongoose.Schema({
     emailConfig: {
         senderEmail: {
             type: String,
-            default: 'noreply@hackjunction.com',
+            default: 'noreply@thatcryptohackathon.com',
             trim: true,
             validate: {
                 validator: function (v) {
@@ -329,7 +329,7 @@ const EventSchema = new mongoose.Schema({
         },
         senderName: {
             type: String,
-            default: 'Junction team',
+            default: 'That Crypto Hackathon team',
             trim: true,
             maxLength: 100,
         },

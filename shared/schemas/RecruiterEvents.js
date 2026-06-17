@@ -5,14 +5,14 @@ const Misc = require('../constants/misc')
 const mongooseSchema = new mongoose.Schema({
     eventId: {
         type: String,
-        required: true,
+
 
     },
     organisation: {
         type: String,
         default: '',
     },
-})
+}, { _id: false })
 
 const RecruiterEventType = new GraphQLObjectType({
     name: 'RecruiterEvent',
